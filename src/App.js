@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import LoginView from "./components/views/login.view";
+import LandingView from "./components/views/landing.view";
 import "./App.css";
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <LoginView />
+        <LandingView />
       </div>
     );
   }
