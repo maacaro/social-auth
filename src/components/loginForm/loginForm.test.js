@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import LoginForm from "./loginForm";
-import FacebookLogin from "react-facebook-login";
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { GoogleLogin } from "react-google-login";
 
 describe("LoginForm", () => {
@@ -30,6 +30,27 @@ describe("LoginForm", () => {
         expect.any(Function)
       );
     });
+    describe("the `callback` function", () => {
+      it("should call the handleLogin function", () => {
+        const handleLogin = jest.fn(() => {});
+        const wrapper = shallow(<LoginForm handleLogin={handleLogin} />);
+        wrapper
+          .find(FacebookLogin)
+          .props()
+          .callback();
+        expect(handleLogin).toBeCalledTimes(1);
+      });
+      it("should call the handleLogin function with `facebook,response` arg", () => {
+        const handleLogin = jest.fn(() => {});
+        const response = {};
+        const wrapper = shallow(<LoginForm handleLogin={handleLogin} />);
+        wrapper
+          .find(FacebookLogin)
+          .props()
+          .callback(response);
+        expect(handleLogin).toBeCalledWith("facebook", response);
+      });
+    });
   });
   it("should contain a `GoogleLogin` component", () => {
     const wrapper = shallow(<LoginForm />);
@@ -49,6 +70,27 @@ describe("LoginForm", () => {
       expect(wrapper.find(GoogleLogin).props().onSuccess).toEqual(
         expect.any(Function)
       );
+    });
+    describe("the `onSuccess` function", () => {
+      it("should call the handleLogin function", () => {
+        const handleLogin = jest.fn(() => {});
+        const wrapper = shallow(<LoginForm handleLogin={handleLogin} />);
+        wrapper
+          .find(GoogleLogin)
+          .props()
+          .onSuccess();
+        expect(handleLogin).toBeCalledTimes(1);
+      });
+      it("should call the handleLogin function with `google,response` arg", () => {
+        const handleLogin = jest.fn(() => {});
+        const response = {};
+        const wrapper = shallow(<LoginForm handleLogin={handleLogin} />);
+        wrapper
+          .find(GoogleLogin)
+          .props()
+          .onSuccess(response);
+        expect(handleLogin).toBeCalledWith("google", response);
+      });
     });
   });
 });
