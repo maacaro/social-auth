@@ -9,88 +9,55 @@ describe("LoginForm", () => {
     const wrapper = shallow(<LoginForm />);
     expect(wrapper.find(FacebookLogin)).toHaveLength(1);
   });
-  describe("the Facebook login component", () => {
-    it("should have the appId prop set the FACEBOOK_APP_ID", () => {
-      const wrapper = shallow(<LoginForm />);
-      const FACEBOOK_APP_ID = "1270070933135348";
+  describe("on success login by facebook", () => {
+    it("should call the onSuccessLogin with user credentials", () => {
+      const response = {
+        name: "Manuel Castro",
+        email: "maacaro@gmail.com",
+        picture: { data: { url: "someURL" } }
+      };
+      const credentials = {
+        name: "Manuel Castro",
+        email: "maacaro@gmail.com",
+        picture: "someURL"
+      };
+      const onSuccessLogin = jest.fn(response => null);
 
-      expect(wrapper.find(FacebookLogin).props().appId).toEqual(
-        FACEBOOK_APP_ID
-      );
-    });
-    it("should have the `fields` prop set to `name,email,picture`", () => {
-      const wrapper = shallow(<LoginForm />);
-      const fields = "name,email,picture";
-
-      expect(wrapper.find(FacebookLogin).props().fields).toEqual(fields);
-    });
-    it("should have the `callback` prop set to a function", () => {
-      const wrapper = shallow(<LoginForm />);
-      expect(wrapper.find(FacebookLogin).props().callback).toEqual(
-        expect.any(Function)
-      );
-    });
-    describe("the `callback` function", () => {
-      it("should call the handleLogin function", () => {
-        const handleLogin = jest.fn(() => {});
-        const wrapper = shallow(<LoginForm handleLogin={handleLogin} />);
-        wrapper
-          .find(FacebookLogin)
-          .props()
-          .callback();
-        expect(handleLogin).toBeCalledTimes(1);
-      });
-      it("should call the handleLogin function with `facebook,response` arg", () => {
-        const handleLogin = jest.fn(() => {});
-        const response = {};
-        const wrapper = shallow(<LoginForm handleLogin={handleLogin} />);
-        wrapper
-          .find(FacebookLogin)
-          .props()
-          .callback(response);
-        expect(handleLogin).toBeCalledWith("facebook", response);
-      });
+      const wrapper = shallow(<LoginForm onSuccessLogin={onSuccessLogin} />);
+      wrapper
+        .find(FacebookLogin)
+        .props()
+        .callback(response);
+      expect(onSuccessLogin).toBeCalledWith(credentials);
     });
   });
   it("should contain a `GoogleLogin` component", () => {
     const wrapper = shallow(<LoginForm />);
     expect(wrapper.find(GoogleLogin)).toHaveLength(1);
   });
-  describe("GoogleLogin", () => {
-    it("should have the `clientId` prop set to the GOOGLE_CLIENT_ID", () => {
-      const wrapper = shallow(<LoginForm />);
-      const GOOGLE_CLIENT_ID =
-        "40032388679-3mcac9u2ocqaneo1uanklvecb4oranjk.apps.googleusercontent.com";
-      expect(wrapper.find(GoogleLogin).props().clientId).toEqual(
-        GOOGLE_CLIENT_ID
-      );
-    });
-    it("should have the `onSuccess` prop set to a Function", () => {
-      const wrapper = shallow(<LoginForm />);
-      expect(wrapper.find(GoogleLogin).props().onSuccess).toEqual(
-        expect.any(Function)
-      );
-    });
-    describe("the `onSuccess` function", () => {
-      it("should call the handleLogin function", () => {
-        const handleLogin = jest.fn(() => {});
-        const wrapper = shallow(<LoginForm handleLogin={handleLogin} />);
-        wrapper
-          .find(GoogleLogin)
-          .props()
-          .onSuccess();
-        expect(handleLogin).toBeCalledTimes(1);
-      });
-      it("should call the handleLogin function with `google,response` arg", () => {
-        const handleLogin = jest.fn(() => {});
-        const response = {};
-        const wrapper = shallow(<LoginForm handleLogin={handleLogin} />);
-        wrapper
-          .find(GoogleLogin)
-          .props()
-          .onSuccess(response);
-        expect(handleLogin).toBeCalledWith("google", response);
-      });
+  describe("on success login by Google", () => {
+    it("should call the onSuccessLogin with user credentials", () => {
+      const response = {
+        profileObj: {
+          email: "maacaro@gmail.com",
+          imageUrl: "someURL",
+          givenName: "Manuel",
+          familyName: "Castro"
+        }
+      };
+      const credentials = {
+        name: "Manuel Castro",
+        email: "maacaro@gmail.com",
+        picture: "someURL"
+      };
+      const onSuccessLogin = jest.fn(response => null);
+
+      const wrapper = shallow(<LoginForm onSuccessLogin={onSuccessLogin} />);
+      wrapper
+        .find(GoogleLogin)
+        .props()
+        .onSuccess(response);
+      expect(onSuccessLogin).toBeCalledWith(credentials);
     });
   });
 });
