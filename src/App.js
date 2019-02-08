@@ -1,28 +1,22 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import LandingView from "./components/views/landing.view";
+import "./App.css";
 
 class App extends Component {
+  state = {
+    isLogin: false,
+    credentials: { email: null, name: null, picture: null }
+  };
+  singIn = credentials => {
+    this.setState({ isLogin: true });
+    this.setState({ credentials: credentials });
+  };
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <LandingView />
       </div>
     );
   }
 }
-
 export default App;
